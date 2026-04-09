@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Tutor</title>
+</head>
+<body>
+    <h2>AI Tutor Demo</h2>
+    <input id="question" placeholder="Nhập câu hỏi..." style="width:300px;">
+    <button onclick="ask()">Ask</button>
+    <p id="answer"></p>
+
+    <script>
+        async function ask() {
+            const q = document.getElementById("question").value;
+            document.getElementById("answer").innerText = "Thinking...";
+
+            const res = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer YOUR_API_KEY"
+                },
+                body: JSON.stringify({
+                    model: "gpt-4o-mini",
+                    messages: [{role: "user", content: q}]
+                })
+            });
+
+            const data = await res.json();
+            document.getElementById("answer").innerText = data.choices[0].message.content;
+        }
+    </script>
+</body>
+</html>
